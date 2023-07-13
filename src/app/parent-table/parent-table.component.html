@@ -1,0 +1,98 @@
+<ng-container *ngIf="rootGroup">
+  <table>
+    <thead>
+      <!-- En-tête du tableau -->
+      <tr *ngIf="groupe === rootGroup">
+        <th>Désignation</th>
+        <th>Quantité</th>
+        <th>Unité</th>
+        <th>PU</th>
+        <th>Total HT</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <!-- Lignes de données pour le groupe -->
+      <tr>
+        <td style="width: 50%;">
+          <input [(ngModel)]="groupe.designation" placeholder="Désignation">
+        </td>
+        <td>
+          <input type="number" [(ngModel)]="groupe.quantite" placeholder="Quantité">
+        </td>
+        <td>
+          <input [value]="groupe.unite" disabled>
+        </td>
+        <td>
+          <input [value]="groupe.prix" disabled>
+        </td>
+        <td>
+          <input [value]="calculateGroupeTotal()" disabled>
+        </td>
+        <td>
+          <button (click)="groupe.ouvert = !groupe.ouvert">
+            {{ groupe.ouvert ? '⯅' : '⯆' }}
+          </button>
+          <button class="delete-button" *ngIf="rootGroup !== groupe" (click)="supprimerGroupeEvent.emit(groupe)">🞩</button>
+        </td>
+      </tr>
+      <!-- Lignes de données pour les lignes du groupe -->
+      <tr *ngFor="let ligne of groupe.lignes" [hidden]="!groupe.ouvert">
+        <td style="width: 50%;">
+          <input [(ngModel)]="ligne.designation" placeholder="Désignation">
+        </td>
+        <td>
+          <input type="number" [(ngModel)]="ligne.quantite" placeholder="Quantité">
+        </td>
+        <td>
+          <input [(ngModel)]="ligne.unite" placeholder="Unité">
+        </td>
+        <td>
+          <input type="number" [(ngModel)]="ligne.prix" placeholder="Prix">
+        </td>
+        <td>
+          <input [value]="calculateLigneTotal(ligne)" disabled>
+        </td>
+        <td>
+          <button class="delete-button" (click)="supprimerLigne(ligne)">🞩</button>
+        </td>
+      </tr>
+      <!-- Ligne pour ajouter un nouveau groupe ou une nouvelle ligne -->
+      <tr>
+        <td colspan="6">
+          <button (click)="ajouterGroupe()">Ajouter un groupe</button>
+          <button (click)="ajouterLigne()">Ajouter une ligne</button>
+        </td>
+      </tr>
+    </tbody>
+
+    <!-- Lignes pour les enfants du groupe -->
+    <tr *ngFor="let enfant of groupe.enfants" [hidden]="!groupe.ouvert">
+      <td colspan="6">
+        <parent-table [groupe]="enfant" [rootGroup]="rootGroup" (supprimerGroupeEvent)="supprimerGroupe($event)"></parent-table>
+      </td>
+    </tr>
+
+    <tfoot *ngIf="showTableauSupplementaire">
+      <!-- Tableau supplémentaire pour les totaux -->
+      <tr>
+        <td>Montant total HT</td>
+        <td>{{ calculateTotalHT() | number:'1.2-2'}} CHF</td>
+      </tr>
+      <tr>
+        <td>TVA 7,7%</td>
+        <td>{{ (calculateTotalHT() * 1.077 - calculateTotalHT()) | number:'1.2-2'}} CHF</td>
+      </tr>
+      <tr>
+        <td>Montant Total TTC</td>
+        <td>{{ (calculateTotalHT() * 1.077) | number:'1.2-2'}} CHF</td>
+      </tr>
+    </tfoot>
+  </table>
+</ng-container>
+
+<div *ngIf="!rootGroup">
+  <!-- Bouton pour ajouter un nouveau devis -->
+  <button (click)="ajouterGroupe()">Ajouter un devis</button>
+</div>

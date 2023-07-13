@@ -1,0 +1,72 @@
+/* Style du tableau */
+table {
+  border-collapse: collapse;
+  width: 100%;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Style de l'en-tête */
+thead {
+  background-color: #7fa3ff;
+  color: #fff;
+}
+
+/* Style des cellules de l'en-tête */
+th {
+  font-weight: bold;
+  padding: 10px;
+}
+
+/* Style des cellules de données */
+td {
+  padding: 10px;
+  border-bottom: 1px solid #EDEDED;
+}
+
+/* Style des cellules de données pour la première ligne de chaque groupe */
+tbody tr:first-child {
+  background-color: #d7e3ff;
+  font-weight: bold;
+}
+
+/* Style des cellules de données pour la colonne "Désignation" */
+td.designation-cell {
+  width: 50%;
+}
+
+/* Style des cellules de données pour les autres colonnes */
+td:not(.designation-cell) {
+  width: calc((100% - 50%) / 5);
+}
+
+/* Style des cases d'entrée */
+input {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Style du bouton de suppression */
+.delete-button {
+  background-color: rgb(230, 0, 0);
+  color: white;
+}
+
+.delete-button:hover {
+  background-color: rgb(147, 0, 0);
+  color: white;
+}
+
+/* Style des boutons d'ajout */
+button {
+  margin: 5px;
+  padding: 8px 16px;
+  background-color: #0078D4;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #005A9E;
+}
